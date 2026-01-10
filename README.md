@@ -622,7 +622,7 @@ Check the [CI status](https://github.com/skaznowiecki/node-proxy/actions) to see
 
 MIT License - see the [LICENSE](LICENSE) file for details.
 
-Copyright (c) 2024 Sergio Kaznowiecki
+Copyright (c) 2026 Sergio Kaznowiecki
 
 ---
 
