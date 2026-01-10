@@ -49,14 +49,11 @@ npm install -g @skaznowiecki/node-proxy
 npm install @skaznowiecki/node-proxy
 ```
 
-## 🚀 Quickstart
+## 🚀 Quick Start
 
-### 1. Install (Development)
+### 1. Install
 ```bash
-git clone https://github.com/skaznowiecki/node-proxy.git
-cd node-proxy
-npm install
-npm run build
+npm install -g @skaznowiecki/node-proxy
 ```
 
 ### 2. Create Configuration
@@ -73,14 +70,7 @@ Create `config.json`:
 
 ### 3. Start Proxy
 ```bash
-# If installed globally
 node-proxy start --rules config.json
-
-# Or if installed locally
-npx node-proxy start --rules config.json
-
-# Or for development
-npm run daemon:start -- --rules config.json
 ```
 
 ### 4. Test It
@@ -436,23 +426,23 @@ Use `__defaults` for global settings:
 
 **Start:**
 ```bash
-npm run daemon:start -- --rules config.json
-npm run daemon:start -- --rules config.json --cluster --workers 4
+node-proxy start --rules config.json
+node-proxy start --rules config.json --cluster --workers 4
 ```
 
 **Stop:**
 ```bash
-npm run daemon:stop
+node-proxy stop
 ```
 
 **Restart:**
 ```bash
-npm run daemon:restart -- --rules new-config.json
+node-proxy restart --rules config.json
 ```
 
 **Status:**
 ```bash
-npm run daemon:status
+node-proxy status
 ```
 
 ### Cluster Mode
@@ -460,7 +450,7 @@ npm run daemon:status
 Run with multiple worker processes for better performance:
 
 ```bash
-npm run daemon:start -- --rules config.json --cluster --workers 4
+node-proxy start --rules config.json --cluster --workers 4
 ```
 
 - Automatically restarts failed workers
