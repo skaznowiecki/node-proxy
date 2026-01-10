@@ -9,14 +9,32 @@
 
 ## ✨ Features
 
+### Core Proxy Features
 - 🌐 **Virtual Host Routing** - Route requests by hostname
 - 🛣️ **Path-Based Routing** - Different URL paths to different backends
 - ⚖️ **Load Balancing** - Round-robin distribution across multiple backends
 - 🔀 **Redirects & Rewrites** - HTTP redirects and URL path rewriting
-- 👥 **Cluster Mode** - Multi-process scaling for performance
+
+### Production-Ready Features
+- 🔐 **HTTPS/TLS Termination** - Full SSL/TLS support with certificate management
+- ⚡ **Connection Keep-Alive** - Persistent connections for better performance
+- 📡 **X-Forwarded Headers** - Proper client IP and protocol forwarding (X-Forwarded-For, X-Forwarded-Host, X-Forwarded-Proto)
+- 👥 **Cluster Mode** - Multi-process scaling across CPU cores
 - 🔄 **Daemon Management** - Run as background service (start/stop/restart/status)
-- 📊 **Health Checks** - Monitor backend health (coming soon)
+
+### Developer Experience
 - ✅ **TypeScript** - Fully typed for great developer experience
+- 🔒 **Zero Dependencies** - No runtime dependencies, only Node.js built-ins
+- 📊 **Comprehensive Testing** - 235+ tests with 92%+ coverage
+- 📝 **Extensive Documentation** - Multiple guides and examples
+
+## 📊 Project Status
+
+- **Repository**: [github.com/skaznowiecki/node-proxy](https://github.com/skaznowiecki/node-proxy)
+- **CI/CD**: Automated testing on Node.js 18.x, 20.x, and 22.x
+- **Test Coverage**: 92%+ on core functionality
+- **License**: MIT
+- **Maintained**: Active development and maintenance
 
 ---
 
@@ -156,12 +174,29 @@ Requests are distributed **round-robin** across 3 API servers for high availabil
 
 ---
 
-### Level 5: Advanced Routing
-**Use Case**: Mix of proxying, redirects, and rewrites
+### Level 5: Production HTTPS Setup
+**Use Case**: Full production configuration with TLS/SSL termination
 
 ```json
 {
+  "__defaults": {
+    "headers": {
+      "x_forwarded": true,
+      "pass_host": false
+    }
+  },
   "80": {
+    "/": {
+      "type": "redirect",
+      "to": "https://example.com",
+      "status": 301
+    }
+  },
+  "443": {
+    "tls": {
+      "cert": "/etc/letsencrypt/live/example.com/fullchain.pem",
+      "key": "/etc/letsencrypt/live/example.com/privkey.pem"
+    },
     "hosts": {
       "www.example.com": {
         "/": "http://frontend:3000",
@@ -174,10 +209,6 @@ Requests are distributed **round-robin** across 3 API servers for high availabil
           "to": "https://cdn.example.com/static",
           "strip_prefix": "/static",
           "status": 301
-        },
-        "/old-api": {
-          "type": "rewrite",
-          "to": "/api/v2"
         }
       }
     }
@@ -185,14 +216,96 @@ Requests are distributed **round-robin** across 3 API servers for high availabil
 }
 ```
 
-Combines multiple routing strategies:
-- **Proxy**: Root to frontend, API with load balancing
-- **Redirect**: Static assets to CDN (301 permanent redirect)
-- **Rewrite**: Old API path transformed to new versioned path
+Production features combined:
+- **HTTPS/TLS**: SSL termination with Let's Encrypt certificates
+- **HTTP → HTTPS**: Automatic 301 redirect from port 80 to 443
+- **X-Forwarded Headers**: Backend servers receive client IP and protocol info
+- **Load Balancing**: API requests distributed across multiple servers
+- **CDN Redirect**: Static assets offloaded to CDN
 
 ---
 
 ## ⚙️ Configuration Reference
+
+### TLS/SSL Configuration
+
+Enable HTTPS on any port by adding a `tls` configuration:
+
+```json
+{
+  "443": {
+    "tls": {
+      "cert": "/path/to/certificate.pem",
+      "key": "/path/to/private-key.pem",
+      "ca": "/path/to/ca-bundle.pem"  // Optional
+    },
+    "*": "http://backend:3000"
+  }
+}
+```
+
+**Key points:**
+- `cert`: Path to SSL certificate (PEM format)
+- `key`: Path to private key (PEM format)
+- `ca`: Optional CA bundle for client certificate verification
+- Works with Let's Encrypt, self-signed, or commercial certificates
+- Combine with virtual hosts and all other routing features
+
+**HTTP to HTTPS redirect:**
+```json
+{
+  "80": {
+    "/": {
+      "type": "redirect",
+      "to": "https://yourdomain.com",
+      "status": 301
+    }
+  },
+  "443": {
+    "tls": { "cert": "...", "key": "..." },
+    "*": "http://backend:3000"
+  }
+}
+```
+
+### X-Forwarded Headers
+
+Enable proper client information forwarding to backends:
+
+```json
+{
+  "__defaults": {
+    "headers": {
+      "x_forwarded": true,   // Add X-Forwarded-* headers
+      "pass_host": false      // Forward original Host header
+    }
+  },
+  "80": "http://backend:3000"
+}
+```
+
+When enabled, the proxy adds:
+- **X-Forwarded-For**: Client IP address (appends to existing header for proxy chains)
+- **X-Forwarded-Host**: Original Host header from client request
+- **X-Forwarded-Proto**: Protocol used (`http` or `https`)
+
+These headers allow your backend application to:
+- Know the real client IP address
+- Determine if the original request was HTTPS
+- Generate correct absolute URLs in responses
+
+### Performance Features
+
+**Connection Keep-Alive** (enabled by default):
+- Reuses TCP connections to backend servers
+- Reduces connection establishment overhead
+- Significantly lowers latency for subsequent requests
+- Configured with optimal settings:
+  - Max sockets per host: 100
+  - Max free sockets: 10
+  - Socket timeout: 60 seconds
+
+**Connection pooling** happens automatically - no configuration needed. The proxy maintains separate connection pools for HTTP and HTTPS backends.
 
 ### Rule Types
 
@@ -461,9 +574,57 @@ Request → ProxyServer → ProxyConfig.getRule()
 
 ---
 
+---
+
+## 📝 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes and releases.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please check out the [Contributing Guide](CONTRIBUTING.md) for guidelines.
+
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes with tests
+4. Run `npm run lint && npm run type-check && npm run test:run`
+5. Submit a pull request
+
+All PRs require:
+- Passing tests on Node.js 18.x, 20.x, and 22.x
+- Code coverage maintained
+- ESLint and TypeScript checks passing
+
+### CI/CD Pipeline
+
+This project uses GitHub Actions for automated testing and publishing:
+
+- **Continuous Integration**: Runs on every push and pull request
+  - Tests on Node.js 18.x, 20.x, 22.x
+  - ESLint and TypeScript type checking
+  - Code coverage reporting
+  - Build verification
+
+- **Automated Publishing**: Publishes to NPM on GitHub releases
+  - Runs full test suite before publishing
+  - Includes NPM provenance for supply chain security
+  - Automatic version management
+
+Check the [CI status](https://github.com/skaznowiecki/node-proxy/actions) to see the latest build results.
+
+---
+
 ## 📄 License
 
-ISC License
+MIT License - see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2026 Sergio Kaznowiecki
+
+---
 
 ## 🙏 Credits
 
