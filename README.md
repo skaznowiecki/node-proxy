@@ -17,6 +17,15 @@
 - 🔄 **Daemon Management** - Run as background service (start/stop/restart/status)
 - 📊 **Health Checks** - Monitor backend health (coming soon)
 - ✅ **TypeScript** - Fully typed for great developer experience
+- 🔒 **Zero Dependencies** - No runtime dependencies, only Node.js built-ins
+
+## 📊 Project Status
+
+- **Repository**: [github.com/skaznowiecki/node-proxy](https://github.com/skaznowiecki/node-proxy)
+- **CI/CD**: Automated testing on Node.js 18.x, 20.x, and 22.x
+- **Test Coverage**: 92%+ on core functionality
+- **License**: MIT
+- **Maintained**: Active development and maintenance
 
 ---
 
@@ -461,9 +470,57 @@ Request → ProxyServer → ProxyConfig.getRule()
 
 ---
 
+---
+
+## 📝 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes and releases.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please check out the [Contributing Guide](CONTRIBUTING.md) for guidelines.
+
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes with tests
+4. Run `npm run lint && npm run type-check && npm run test:run`
+5. Submit a pull request
+
+All PRs require:
+- Passing tests on Node.js 18.x, 20.x, and 22.x
+- Code coverage maintained
+- ESLint and TypeScript checks passing
+
+### CI/CD Pipeline
+
+This project uses GitHub Actions for automated testing and publishing:
+
+- **Continuous Integration**: Runs on every push and pull request
+  - Tests on Node.js 18.x, 20.x, 22.x
+  - ESLint and TypeScript type checking
+  - Code coverage reporting
+  - Build verification
+
+- **Automated Publishing**: Publishes to NPM on GitHub releases
+  - Runs full test suite before publishing
+  - Includes NPM provenance for supply chain security
+  - Automatic version management
+
+Check the [CI status](https://github.com/skaznowiecki/node-proxy/actions) to see the latest build results.
+
+---
+
 ## 📄 License
 
-ISC License
+MIT License - see the [LICENSE](LICENSE) file for details.
+
+Copyright (c) 2024 Sergio Kaznowiecki
+
+---
 
 ## 🙏 Credits
 
