@@ -354,7 +354,7 @@ export class ProxyServer {
 
         // Get the rule again with rewritten path (should be a proxy rule)
         const rewrittenRule = this.config.getRule(port, hostname, rewrittenUrl);
-        if (rewrittenRule && rewrittenRule.type === RuleType.PROXY) {
+        if (rewrittenRule?.type === RuleType.PROXY) {
             // Proxy to the rewritten path
             this.handleProxy(rewrittenRule, req, res, port, hostname, rewrittenUrl, method, startTime);
         } else {
