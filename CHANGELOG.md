@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-01-10
+
+### Fixed
+- Use optional chaining for rewrittenRule type check (ESLint warning)
+
+### Changed
+- Updated dependencies:
+  - `globals` from 15.15.0 to 17.0.0
+  - `eslint-config-prettier` from 9.1.2 to 10.1.8
+  - `@types/node` from 20.19.28 to 25.0.6
+- Split documentation into user-focused README.md and developer-focused DEVELOPMENT.md
+- Improved README badges (added npm downloads, linked badges to package page)
+- Simplified Quick Start section to focus on package installation
+- Updated CLI usage examples to use `node-proxy` command instead of `npm run`
+
 ## [1.0.0] - 2026-01-10
 
 ### Added
