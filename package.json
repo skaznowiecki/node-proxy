@@ -1,5 +1,5 @@
 {
-  "name": "node-proxy",
+  "name": "@skaznowiecki/node-proxy",
   "version": "1.0.0",
   "description": "A lightweight, zero-dependency, configuration-driven HTTP/HTTPS proxy server with TLS termination, load balancing, and virtual hosts",
   "main": "dist/app.js",

@@ -1,9 +1,9 @@
 # node-proxy
 
-[![npm version](https://img.shields.io/npm/v/node-proxy.svg)](https://www.npmjs.com/package/node-proxy)
+[![npm version](https://img.shields.io/npm/v/@skaznowiecki/node-proxy.svg)](https://www.npmjs.com/package/@skaznowiecki/node-proxy)
 [![CI](https://github.com/skaznowiecki/node-proxy/actions/workflows/ci.yml/badge.svg)](https://github.com/skaznowiecki/node-proxy/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/node/v/node-proxy.svg)](https://nodejs.org)
+[![Node.js Version](https://img.shields.io/node/v/@skaznowiecki/node-proxy.svg)](https://nodejs.org)
 
 > A lightweight, zero-dependency, configuration-driven HTTP/HTTPS proxy server with TLS termination, load balancing, and virtual hosts
 
@@ -42,10 +42,10 @@
 
 ```bash
 # Global installation (recommended for CLI usage)
-npm install -g node-proxy
+npm install -g @skaznowiecki/node-proxy
 
 # Or local installation
-npm install node-proxy
+npm install @skaznowiecki/node-proxy
 ```
 
 ## 🚀 Quickstart
