@@ -1,9 +1,10 @@
 # node-proxy
 
 [![npm version](https://img.shields.io/npm/v/@skaznowiecki/node-proxy.svg)](https://www.npmjs.com/package/@skaznowiecki/node-proxy)
+[![npm downloads](https://img.shields.io/npm/dm/@skaznowiecki/node-proxy.svg)](https://www.npmjs.com/package/@skaznowiecki/node-proxy)
 [![CI](https://github.com/skaznowiecki/node-proxy/actions/workflows/ci.yml/badge.svg)](https://github.com/skaznowiecki/node-proxy/actions/workflows/ci.yml)
+[![Node.js Version](https://img.shields.io/node/v/@skaznowiecki/node-proxy.svg)](https://www.npmjs.com/package/@skaznowiecki/node-proxy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/node/v/@skaznowiecki/node-proxy.svg)](https://nodejs.org)
 
 > A lightweight, zero-dependency, configuration-driven HTTP/HTTPS proxy server with TLS termination, load balancing, and virtual hosts
 
