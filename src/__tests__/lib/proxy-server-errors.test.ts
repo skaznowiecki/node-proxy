@@ -16,23 +16,25 @@ describe('ProxyServer - Error Handling', () => {
     if (proxyServer) proxyServer.stop();
   });
 
-  it('should return 404 for unmapped port', async () => {
+  it('should return 404 for unmapped path (no backend)', async () => {
     const config = ProxyConfig.loadFromString(`{
-      "8080": "http://localhost:3000"
+      "${proxyPort}": {
+        "/api": "http://localhost:3000"
+      }
     }`);
 
     proxyServer = new ProxyServer(config);
     proxyServer.start();
-    await waitForServer(8080);
+    await waitForServer(proxyPort);
 
-    // Request to port with no configuration
-    const response = await makeRequest(8080, '/unmapped');
+    // Request to path with no configuration
+    const response = await makeRequest(proxyPort, '/unmapped');
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toContain('Not Found');
   });
 
-  it('should return 404 for unmapped path', async () => {
+  it('should return 404 for unmapped path (with backend)', async () => {
     const mockBackend = new MockBackendServer({ responseBody: 'OK' });
     const backendPort = await mockBackend.start();
 

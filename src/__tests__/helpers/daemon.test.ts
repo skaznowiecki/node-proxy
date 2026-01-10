@@ -188,7 +188,7 @@ describe('Daemon - Constructor', () => {
 
   it('should use default PID file path when not provided', () => {
     const daemon = new Daemon();
-    const defaultPath = join(process.cwd(), 'proxy-server.pid');
+    const defaultPath = '/tmp/proxy.pid';
 
     daemon.writePidFile(12345);
     expect(existsSync(defaultPath)).toBe(true);
