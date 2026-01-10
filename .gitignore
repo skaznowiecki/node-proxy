@@ -12,8 +12,7 @@ dist/
 .env.*.local
 
 # IDE
-.vscode/*
-!.vscode/settings.json
+.vscode/
 .idea/
 *.swp
 *.swo
@@ -43,5 +42,6 @@ localhost.key
 test-*.sh
 
 # Claude-specific (internal)
+.claude/
 CLAUDE.md
 
