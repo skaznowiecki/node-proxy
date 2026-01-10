@@ -1,9 +1,10 @@
 # node-proxy
 
 [![npm version](https://img.shields.io/npm/v/@skaznowiecki/node-proxy.svg)](https://www.npmjs.com/package/@skaznowiecki/node-proxy)
+[![npm downloads](https://img.shields.io/npm/dm/@skaznowiecki/node-proxy.svg)](https://www.npmjs.com/package/@skaznowiecki/node-proxy)
 [![CI](https://github.com/skaznowiecki/node-proxy/actions/workflows/ci.yml/badge.svg)](https://github.com/skaznowiecki/node-proxy/actions/workflows/ci.yml)
+[![Node.js Version](https://img.shields.io/node/v/@skaznowiecki/node-proxy.svg)](https://www.npmjs.com/package/@skaznowiecki/node-proxy)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/node/v/@skaznowiecki/node-proxy.svg)](https://nodejs.org)
 
 > A lightweight, zero-dependency, configuration-driven HTTP/HTTPS proxy server with TLS termination, load balancing, and virtual hosts
 
@@ -48,14 +49,11 @@ npm install -g @skaznowiecki/node-proxy
 npm install @skaznowiecki/node-proxy
 ```
 
-## 🚀 Quickstart
+## 🚀 Quick Start
 
-### 1. Install (Development)
+### 1. Install
 ```bash
-git clone https://github.com/skaznowiecki/node-proxy.git
-cd node-proxy
-npm install
-npm run build
+npm install -g @skaznowiecki/node-proxy
 ```
 
 ### 2. Create Configuration
@@ -72,14 +70,7 @@ Create `config.json`:
 
 ### 3. Start Proxy
 ```bash
-# If installed globally
 node-proxy start --rules config.json
-
-# Or if installed locally
-npx node-proxy start --rules config.json
-
-# Or for development
-npm run daemon:start -- --rules config.json
 ```
 
 ### 4. Test It
@@ -435,23 +426,23 @@ Use `__defaults` for global settings:
 
 **Start:**
 ```bash
-npm run daemon:start -- --rules config.json
-npm run daemon:start -- --rules config.json --cluster --workers 4
+node-proxy start --rules config.json
+node-proxy start --rules config.json --cluster --workers 4
 ```
 
 **Stop:**
 ```bash
-npm run daemon:stop
+node-proxy stop
 ```
 
 **Restart:**
 ```bash
-npm run daemon:restart -- --rules new-config.json
+node-proxy restart --rules config.json
 ```
 
 **Status:**
 ```bash
-npm run daemon:status
+node-proxy status
 ```
 
 ### Cluster Mode
@@ -459,7 +450,7 @@ npm run daemon:status
 Run with multiple worker processes for better performance:
 
 ```bash
-npm run daemon:start -- --rules config.json --cluster --workers 4
+node-proxy start --rules config.json --cluster --workers 4
 ```
 
 - Automatically restarts failed workers
@@ -496,136 +487,25 @@ View the complete files in `src/__tests__/fixtures/` for detailed examples.
 
 ---
 
+
+---
+
 ## 🛠️ Development
 
-### Running Tests
+Want to contribute or run this project locally?
 
-```bash
-npm test                 # Run in watch mode
-npm run test:run         # Run once
-npm run test:coverage    # With coverage report
-npm run test:ui          # Visual test UI
-```
-
-**Coverage:** 92%+ on ProxyConfig class
-
-### Project Structure
-
-```
-src/
-├── app.ts                      # Main entry point (daemon CLI)
-├── lib/
-│   ├── proxy-config.ts        # Configuration parser
-│   └── proxy-server.ts        # HTTP server & routing
-├── types/
-│   ├── raw-proxy-config.ts    # Input JSON types
-│   ├── standardized-proxy-config.ts  # Internal types
-│   └── shared-proxy-config.ts # Shared types
-├── helpers/
-│   ├── daemon.ts              # Daemon lifecycle
-│   ├── logger.ts              # Logging
-│   └── parse-arguments.ts     # CLI args
-└── __tests__/
-    ├── lib/                   # Unit & integration tests
-    └── fixtures/              # Example configs (14 files)
-```
-
-### Type System
-
-**Configuration Flow:**
-1. **Raw JSON** → `RawProxyConfig` (flexible input)
-2. **Parser** → `ProxyConfig` class (normalization)
-3. **Internal** → `ProxyConfigMap` (optimized lookup)
-4. **Rules** → `ProxyRule` union type (standardized)
-
-### Architecture
-
-```
-Request → ProxyServer → ProxyConfig.getRule()
-                              ↓
-                         Route Lookup
-                    (port → host → path)
-                              ↓
-                      ProxyRule (matched)
-                              ↓
-                    ┌─────────┴─────────┐
-                 PROXY            REDIRECT         REWRITE
-                    │                │                │
-            Round-robin         HTTP 301/302     Path transform
-            to backend(s)       response         then PROXY
-```
-
-**Key Features:**
-- **O(1) lookups** - Uses nested Maps for fast routing
-- **Exact before wildcard** - Hostname/path matching priority
-- **Round-robin** - Load balancing per route (port:host:path key)
-- **Type-safe** - Full TypeScript coverage
-
-### How It Works
-
-1. **Configuration Loading**: JSON file parsed into `RawProxyConfig`, then normalized to `ProxyConfigMap`
-2. **Server Startup**: Creates HTTP servers for each configured port
-3. **Request Handling**:
-   - Extract port, hostname, and path from request
-   - Lookup rule using `getRule(port, hostname, path)`
-   - Execute rule (proxy, redirect, or rewrite)
-4. **Load Balancing**: Round-robin counter per unique `port:host:path` key
-5. **Cluster Mode**: Master process spawns workers, manages lifecycle
-
----
-
----
-
-## 📝 Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes and releases.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please check out the [Contributing Guide](CONTRIBUTING.md) for guidelines.
-
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with tests
-4. Run `npm run lint && npm run type-check && npm run test:run`
-5. Submit a pull request
-
-All PRs require:
-- Passing tests on Node.js 18.x, 20.x, and 22.x
-- Code coverage maintained
-- ESLint and TypeScript checks passing
-
-### CI/CD Pipeline
-
-This project uses GitHub Actions for automated testing and publishing:
-
-- **Continuous Integration**: Runs on every push and pull request
-  - Tests on Node.js 18.x, 20.x, 22.x
-  - ESLint and TypeScript type checking
-  - Code coverage reporting
-  - Build verification
-
-- **Automated Publishing**: Publishes to NPM on GitHub releases
-  - Runs full test suite before publishing
-  - Includes NPM provenance for supply chain security
-  - Automatic version management
-
-Check the [CI status](https://github.com/skaznowiecki/node-proxy/actions) to see the latest build results.
+See the [Development Guide](DEVELOPMENT.md) for:
+- Local development setup
+- Running tests and code quality checks
+- Project architecture and structure
+- Contribution guidelines
+- CI/CD pipeline details
 
 ---
 
 ## 📄 License
 
-MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - Copyright (c) 2026 Sergio Kaznowiecki
 
-Copyright (c) 2026 Sergio Kaznowiecki
+See [LICENSE](LICENSE) for full details.
 
----
-
-## 🙏 Credits
-
-Built with TypeScript, Node.js, and ❤️
