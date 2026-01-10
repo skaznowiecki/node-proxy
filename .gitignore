@@ -42,5 +42,6 @@ localhost.key
 test-*.sh
 
 # Claude-specific (internal)
+.claude/
 CLAUDE.md
 
