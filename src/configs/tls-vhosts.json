@@ -1,0 +1,38 @@
+{
+  "__defaults": {
+    "headers": {
+      "x_forwarded": true,
+      "pass_host": true
+    }
+  },
+  "443": {
+    "tls": {
+      "cert": "/etc/ssl/certs/wildcard.crt",
+      "key": "/etc/ssl/private/wildcard.key",
+      "ca": "/etc/ssl/certs/ca-bundle.crt"
+    },
+    "hosts": {
+      "api.example.com": {
+        "/v1": {
+          "type": "proxy",
+          "to": [
+            "http://api-v1-1:9000",
+            "http://api-v1-2:9000",
+            "http://api-v1-3:9000"
+          ]
+        },
+        "/v2": "http://api-v2:9000"
+      },
+      "web.example.com": {
+        "/": "http://web:3000",
+        "/api": {
+          "type": "rewrite",
+          "to": "/internal/api"
+        }
+      },
+      "cdn.example.com": {
+        "/": "http://static-files:8080"
+      }
+    }
+  }
+}

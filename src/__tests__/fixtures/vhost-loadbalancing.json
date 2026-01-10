@@ -1,0 +1,30 @@
+{
+  "80": {
+    "hosts": {
+      "shop.example.com": {
+        "/": {
+          "type": "proxy",
+          "to": [
+            "http://web-server-1:3000",
+            "http://web-server-2:3000",
+            "http://web-server-3:3000"
+          ]
+        },
+        "/api": {
+          "type": "proxy",
+          "to": [
+            "http://api-1:9000",
+            "http://api-2:9000"
+          ]
+        }
+      },
+      "checkout.example.com": {
+        "type": "proxy",
+        "to": [
+          "http://checkout-1:8000",
+          "http://checkout-2:8000"
+        ]
+      }
+    }
+  }
+}

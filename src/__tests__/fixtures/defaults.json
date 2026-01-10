@@ -1,0 +1,14 @@
+{
+  "__defaults": {
+    "timeout_ms": 5000,
+    "retries": {
+      "attempts": 2,
+      "backoff_ms": 200
+    },
+    "headers": {
+      "x_forwarded": true,
+      "pass_host": true
+    }
+  },
+  "80": "http://10.0.1.11:9001"
+}

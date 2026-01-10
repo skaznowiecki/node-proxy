@@ -1,0 +1,24 @@
+{
+  "__defaults": {
+    "headers": {
+      "x_forwarded": true,
+      "pass_host": false
+    }
+  },
+  "80": {
+    "/": {
+      "type": "redirect",
+      "to": "https://example.com",
+      "status": 301
+    }
+  },
+  "443": {
+    "tls": {
+      "cert": "/etc/ssl/certs/server.crt",
+      "key": "/etc/ssl/private/server.key"
+    },
+    "/api": "http://localhost:9001",
+    "/static": "http://localhost:8080",
+    "*": "http://localhost:3000"
+  }
+}

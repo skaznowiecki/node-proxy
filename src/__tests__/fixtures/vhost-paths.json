@@ -1,0 +1,16 @@
+{
+  "80": {
+    "hosts": {
+      "app.mycompany.com": {
+        "/": "http://frontend:3000",
+        "/api": "http://api-server:9000",
+        "/auth": "http://auth-service:8080"
+      },
+      "admin.mycompany.com": {
+        "/": "http://admin-panel:5000",
+        "/api": "http://admin-api:9001"
+      },
+      "docs.mycompany.com": "http://documentation:4000"
+    }
+  }
+}

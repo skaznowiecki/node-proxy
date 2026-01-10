@@ -1,0 +1,74 @@
+{
+  "443": {
+    "ssl": {
+      "certs": {
+        "app.saas-platform.com": {
+          "cert": "/etc/ssl/certs/app.saas-platform.com.crt",
+          "key": "/etc/ssl/private/app.saas-platform.com.key"
+        },
+        "api.saas-platform.com": {
+          "cert": "/etc/ssl/certs/api.saas-platform.com.crt",
+          "key": "/etc/ssl/private/api.saas-platform.com.key"
+        },
+        "admin.saas-platform.com": {
+          "cert": "/etc/ssl/certs/admin.saas-platform.com.crt",
+          "key": "/etc/ssl/private/admin.saas-platform.com.key"
+        }
+      }
+    },
+    "hosts": {
+      "app.saas-platform.com": {
+        "/": "http://frontend:3000",
+        "/api": {
+          "type": "proxy",
+          "to": [
+            "http://api-server-1:9000",
+            "http://api-server-2:9000",
+            "http://api-server-3:9000"
+          ]
+        },
+        "/ws": "http://websocket-server:8080",
+        "/static": {
+          "type": "redirect",
+          "to": "https://cdn.cloudfront.net/app-assets",
+          "strip_prefix": "/static",
+          "status": 301
+        }
+      },
+      "api.saas-platform.com": {
+        "/v1": "http://api-v1:9000",
+        "/v2": {
+          "type": "proxy",
+          "to": [
+            "http://api-v2-1:9001",
+            "http://api-v2-2:9001"
+          ]
+        },
+        "/health": "http://health-check:3000"
+      },
+      "admin.saas-platform.com": {
+        "/": "http://admin-ui:5000",
+        "/api": "http://admin-api:9002"
+      }
+    }
+  },
+  "80": {
+    "hosts": {
+      "app.saas-platform.com": {
+        "type": "redirect",
+        "to": "https://app.saas-platform.com",
+        "status": 301
+      },
+      "api.saas-platform.com": {
+        "type": "redirect",
+        "to": "https://api.saas-platform.com",
+        "status": 301
+      },
+      "admin.saas-platform.com": {
+        "type": "redirect",
+        "to": "https://admin.saas-platform.com",
+        "status": 301
+      }
+    }
+  }
+}

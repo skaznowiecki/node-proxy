@@ -1,0 +1,77 @@
+{
+  "__comment": "Production configuration using Let's Encrypt certificates",
+  "__instructions": "1. Replace example.com with your domain, 2. Run: sudo certbot certonly --standalone -d example.com, 3. Start proxy: sudo systemctl start proxy-server",
+
+  "__defaults": {
+    "headers": {
+      "x_forwarded": true,
+      "pass_host": true
+    }
+  },
+
+  "80": {
+    "__comment": "HTTP port - Redirect all traffic to HTTPS",
+    "hosts": {
+      "example.com": {
+        "/.well-known/acme-challenge": "http://localhost:8888",
+        "/": {
+          "type": "redirect",
+          "to": "https://example.com",
+          "status": 301
+        }
+      },
+      "www.example.com": {
+        "/": {
+          "type": "redirect",
+          "to": "https://example.com",
+          "status": 301
+        }
+      },
+      "api.example.com": {
+        "/": {
+          "type": "redirect",
+          "to": "https://api.example.com",
+          "status": 301
+        }
+      }
+    }
+  },
+
+  "443": {
+    "__comment": "HTTPS port - Serve content with Let's Encrypt certificates",
+    "tls": {
+      "cert": "/etc/letsencrypt/live/example.com/fullchain.pem",
+      "key": "/etc/letsencrypt/live/example.com/privkey.pem"
+    },
+    "hosts": {
+      "example.com": {
+        "__comment": "Main website",
+        "/api": {
+          "type": "proxy",
+          "to": [
+            "http://localhost:3001",
+            "http://localhost:3002",
+            "http://localhost:3003"
+          ]
+        },
+        "/static": "http://localhost:8080",
+        "/admin": "http://localhost:9000",
+        "*": "http://localhost:3000"
+      },
+      "www.example.com": {
+        "__comment": "Redirect www to non-www",
+        "/": {
+          "type": "redirect",
+          "to": "https://example.com",
+          "status": 301
+        }
+      },
+      "api.example.com": {
+        "__comment": "API subdomain",
+        "/v1": "http://localhost:4000",
+        "/v2": "http://localhost:5000",
+        "/health": "http://localhost:4000"
+      }
+    }
+  }
+}

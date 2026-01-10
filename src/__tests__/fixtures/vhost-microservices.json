@@ -1,0 +1,24 @@
+{
+  "80": {
+    "hosts": {
+      "api.microservices.io": {
+        "/users": "http://user-service:8001",
+        "/products": "http://product-service:8002",
+        "/orders": "http://order-service:8003",
+        "/payments": "http://payment-service:8004",
+        "/notifications": "http://notification-service:8005",
+        "/search": {
+          "type": "proxy",
+          "to": [
+            "http://search-1:8006",
+            "http://search-2:8006"
+          ]
+        },
+        "/analytics": "http://analytics-service:8007",
+        "/health": "http://health-aggregator:9000"
+      },
+      "dashboard.microservices.io": "http://admin-dashboard:3000",
+      "docs.microservices.io": "http://api-docs:4000"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "8080": {
+        "hosts": {
+            "myshop.local": {
+                "/my-ip": {
+                    "type": "redirect",
+                    "to": "https://api.ipify.org?format=json",
+                    "strip_prefix": "/my-ip",
+                    "status": 302
+                }
+            },
+            "myblog.local": "http://localhost:4000",
+            "admin.local": "http://localhost:5000"
+        }
+    }
+}

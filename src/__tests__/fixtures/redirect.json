@@ -1,0 +1,10 @@
+{
+  "80": {
+    "/static": {
+      "type": "redirect",
+      "to": "https://cdn.mi-dominio.com/static",
+      "strip_prefix": "/static",
+      "status": 302
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "80": {
+    "hosts": {
+      "www.modernapp.io": {
+        "/": "http://nextjs-app:3000",
+        "/api": {
+          "type": "proxy",
+          "to": ["http://api-1:9000", "http://api-2:9000"]
+        },
+        "/static": {
+          "type": "redirect",
+          "to": "https://cdn.modernapp.io/static",
+          "strip_prefix": "/static",
+          "status": 301
+        },
+        "/old": {
+          "type": "redirect",
+          "to": "https://legacy.modernapp.io",
+          "strip_prefix": "/old",
+          "status": 301
+        }
+      },
+      "api.modernapp.io": {
+        "/v1": {
+          "type": "rewrite",
+          "to": "/api/v1"
+        },
+        "/v2": "http://api-v2:9001"
+      },
+      "legacy.modernapp.io": "http://old-system:8080"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "80": {
+    "/api": {
+      "type": "proxy",
+      "to": [
+        "http://10.0.1.11:9001",
+        "http://10.0.1.12:9001"
+      ],
+      "health_check": {
+        "path": "/health",
+        "interval_ms": 5000,
+        "timeout_ms": 800,
+        "expect_status": [
+          200,
+          204
+        ]
+      }
+    }
+  }
+}
