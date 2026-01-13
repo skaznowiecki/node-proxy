@@ -149,12 +149,14 @@ Routes by **hostname**:
   "80": {
     "hosts": {
       "api.example.com": {
-        "type": "proxy",
-        "to": [
-          "http://api-server-1:9000",
-          "http://api-server-2:9000",
-          "http://api-server-3:9000"
-        ]
+        "/": {
+          "type": "proxy",
+          "to": [
+            "http://api-server-1:9000",
+            "http://api-server-2:9000",
+            "http://api-server-3:9000"
+          ]
+        }
       }
     }
   }
