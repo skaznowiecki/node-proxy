@@ -52,6 +52,9 @@ npm run build            # Compile TypeScript to dist/
 ### Running Locally
 
 ```bash
+# Validate configuration
+npm run build && node dist/app.js validate --rules rules.json
+
 # Run with tsx (development)
 npm run daemon:start     # Start daemon
 npm run daemon:stop      # Stop daemon
@@ -59,7 +62,11 @@ npm run daemon:restart   # Restart daemon
 npm run daemon:status    # Check status
 
 # Run compiled version
-node dist/app.js run --rules rules.json
+node dist/app.js start --rules rules.json    # Start daemon
+node dist/app.js stop                         # Stop daemon
+node dist/app.js restart --rules rules.json   # Restart daemon
+node dist/app.js status                       # Check status
+node dist/app.js validate --rules rules.json  # Validate configuration
 ```
 
 ## Project Structure
