@@ -19,11 +19,13 @@
         }
       },
       "checkout.example.com": {
-        "type": "proxy",
-        "to": [
-          "http://checkout-1:8000",
-          "http://checkout-2:8000"
-        ]
+        "/": {
+          "type": "proxy",
+          "to": [
+            "http://checkout-1:8000",
+            "http://checkout-2:8000"
+          ]
+        }
       }
     }
   }
