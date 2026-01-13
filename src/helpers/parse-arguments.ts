@@ -9,6 +9,7 @@ export enum Command {
     STOP = 'stop',
     RESTART = 'restart',
     STATUS = 'status',
+    VALIDATE = 'validate',
 }
 
 /**
@@ -65,11 +66,11 @@ export function parseArguments(): ParsedArguments {
 
     // Command is required
     if (!command) {
-        throw new Error('Command is required. Available commands: start, stop, restart, status');
+        throw new Error('Command is required. Available commands: start, stop, restart, status, validate');
     }
 
-    // For start/restart commands, rules path is required
-    if ((command === Command.START || command === Command.RESTART) && !rulesPath) {
+    // For start/restart/validate commands, rules path is required
+    if ((command === Command.START || command === Command.RESTART || command === Command.VALIDATE) && !rulesPath) {
         // Try default rules.json
         const defaultRulesPath = join(process.cwd(), 'rules.json');
         if (existsSync(defaultRulesPath)) {

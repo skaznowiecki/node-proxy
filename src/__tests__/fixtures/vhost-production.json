@@ -55,19 +55,25 @@
   "80": {
     "hosts": {
       "app.saas-platform.com": {
-        "type": "redirect",
-        "to": "https://app.saas-platform.com",
-        "status": 301
+        "*": {
+          "type": "redirect",
+          "to": "https://app.saas-platform.com",
+          "status": 301
+        }
       },
       "api.saas-platform.com": {
-        "type": "redirect",
-        "to": "https://api.saas-platform.com",
-        "status": 301
+        "*": {
+          "type": "redirect",
+          "to": "https://api.saas-platform.com",
+          "status": 301
+        }
       },
       "admin.saas-platform.com": {
-        "type": "redirect",
-        "to": "https://admin.saas-platform.com",
-        "status": 301
+        "*": {
+          "type": "redirect",
+          "to": "https://admin.saas-platform.com",
+          "status": 301
+        }
       }
     }
   }

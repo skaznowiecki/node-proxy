@@ -149,12 +149,14 @@ Routes by **hostname**:
   "80": {
     "hosts": {
       "api.example.com": {
-        "type": "proxy",
-        "to": [
-          "http://api-server-1:9000",
-          "http://api-server-2:9000",
-          "http://api-server-3:9000"
-        ]
+        "/": {
+          "type": "proxy",
+          "to": [
+            "http://api-server-1:9000",
+            "http://api-server-2:9000",
+            "http://api-server-3:9000"
+          ]
+        }
       }
     }
   }
@@ -421,6 +423,35 @@ Use `__defaults` for global settings:
 ---
 
 ## 🖥️ CLI Usage
+
+### Configuration Validation
+
+Before starting the proxy, validate your configuration file:
+
+```bash
+node-proxy validate --rules config.json
+```
+
+**Features:**
+- **Comprehensive validation** - Checks JSON syntax, port ranges, URLs, rule types, and required fields
+- **Warning detection** - Identifies shadowed rules and non-standard redirect status codes
+- **Visual preview** - Tree-format display of routing rules
+- **Quick feedback** - Catch configuration errors before deployment
+
+**Example output:**
+```
+[INFO] [Validate] Configuration is valid!
+
+Configuration Preview
+=====================
+
+Port 80
++-- Host: myapp.local
+    +-- Path: /
+        +-- [PROXY] -> http://localhost:3000
+
+Summary: 1 port, 1 host, 1 rule
+```
 
 ### Daemon Mode
 

@@ -7,6 +7,8 @@ import { type ServerConfig } from './types/server-config';
 import { parseArguments, Command } from './helpers/parse-arguments';
 import { Daemon } from './helpers/daemon';
 import { Logger } from './helpers/logger';
+import { ConfigValidator } from './lib/config-validator';
+import { ConfigPreviewer } from './lib/config-previewer';
 
 let proxyServer: ProxyServer | null = null;
 let daemon: Daemon | null = null;
@@ -53,6 +55,59 @@ async function startServer(rulesPath: string): Promise<void> {
   // Detach from terminal (always daemon)
   process.stdin.setRawMode?.(false);
   process.stdin.resume();
+}
+
+/**
+ * Handle validate command - validates config and shows preview
+ */
+function handleValidateCommand(rulesPath: string): void {
+  const logger = new Logger('Validate');
+
+  try {
+    // Read configuration file
+    const configContent = readFileSync(rulesPath, 'utf-8');
+
+    // Validate configuration
+    const validator = new ConfigValidator();
+    const result = validator.validate(configContent);
+
+    // Display errors if any
+    if (result.errors.length > 0) {
+      logger.error(`Configuration validation failed with ${result.errors.length} error(s):`);
+      for (const error of result.errors) {
+        logger.error(`  [${error.code}] ${error.path}: ${error.message}`);
+      }
+      process.exit(1);
+    }
+
+    // Display warnings if any
+    if (result.warnings.length > 0) {
+      logger.warn(`Configuration has ${result.warnings.length} warning(s):`);
+      for (const warning of result.warnings) {
+        logger.warn(`  [${warning.code}] ${warning.path}: ${warning.message}`);
+      }
+      // eslint-disable-next-line no-console
+      console.log(''); // Blank line
+    }
+
+    // Show preview if valid
+    if (result.valid && result.config) {
+      logger.info('Configuration is valid!');
+      // eslint-disable-next-line no-console
+      console.log(''); // Blank line
+
+      const previewer = new ConfigPreviewer();
+      // eslint-disable-next-line no-console
+      console.log(previewer.preview(result.config));
+    }
+
+    process.exit(0);
+  } catch (error) {
+    logger.error(
+      `Failed to validate configuration: ${error instanceof Error ? error.message : String(error)}`
+    );
+    process.exit(1);
+  }
 }
 
 /**
@@ -218,7 +273,13 @@ async function main(): Promise<void> {
       return;
     }
 
-    // All commands are daemon commands
+    // Handle validate command separately
+    if (args.command === Command.VALIDATE) {
+      handleValidateCommand(args.rulesPath);
+      return;
+    }
+
+    // All other commands are daemon commands
     handleDaemonCommand(args.command, args.rulesPath, args.pidFile);
   } catch (error) {
     const logger = new Logger('Error');
